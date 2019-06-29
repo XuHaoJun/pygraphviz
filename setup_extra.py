@@ -113,6 +113,16 @@ def _dotneato_config():
 
     return include_path, library_path
 
+def _local_config():
+    library_path=None
+    include_path=None
+    platform = sys.platform
+    local_dirs = ['vendors', 'vendor']
+    include_path = ['vendors/platforms/win32/graphviz/include']
+    library_path = ['vendors/platforms/win32/graphviz/lib/release/lib']
+    return include_path, library_path
+
+
 def _try_configure(include_dirs, library_dirs, try_function):
     i, l = try_function()
     i = include_dirs or i
@@ -190,6 +200,9 @@ def get_graphviz_dirs():
             print("include_dirs=%s"%include_dirs)
             print()
             raise OSError("Error locating graphviz.")
+        elif sys.platform == 'win32':
+            _local_config()
+
 
     print("include_dirs=%s" % include_dirs)
     print("library_dirs=%s" % library_dirs)
